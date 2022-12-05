@@ -4,8 +4,7 @@ from random import randint
 print("Building data:")
 
 # Amount of tuples in respective relations
-price_amount = 3
-person_amount = 100
+person_amount = 10000
 knownInstruments_amount = int(1.5 * person_amount)
 student_amount = int(0.6 * person_amount)
 teacher_amount = int(person_amount - student_amount)
@@ -13,6 +12,7 @@ studentInstrument_amount = int(0.6 * student_amount)
 personContact_amount = int(student_amount)
 instrument_amount = int(1.1 * student_amount)
 siblings_amount = int(0.2 * student_amount)
+double_sibling_amount = int(0.1 * siblings_amount)
 address_amount = int(student_amount - siblings_amount)
 contact_amount = int(student_amount - siblings_amount)
 timeSlot_amount = int(1.2 * teacher_amount)
@@ -113,7 +113,6 @@ student = []
 siblings = []
 knownInstruments = []
 personContact = []
-timeSlot = []
 for i in range(0, teacher_amount):
 	person.append({
 		"personID" : i,
@@ -136,14 +135,20 @@ for i in range(0, teacher_amount):
 		"personID" : i,
 		"instrument" : randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 	})
+print("Done.")
+print("TimeSlot...", end = " ")
+timeSlot = []
+for i in range(0, timeSlot_amount):
+	datee = fake.date().split("-")
 	timeSlot.append({
 		"timeSlotID" : i,
-		"teacherID" : i,
-		"date" : fake.date(),
+		"teacherID" : randint(0, teacher_amount - 1),
+		"day" : datee[2],
+		"month" : datee[1],
+		"year" : randint(2018, 2022),
 		"time" : fake.time()
 	})
 print("Done.")
-print("TimeSlot... Done.")
 
 print("Student...", end = " ")
 for i in range(teacher_amount, person_amount - siblings_amount):
@@ -181,9 +186,23 @@ for i in range(person_amount - siblings_amount, person_amount):
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
 	})
+	admit = randomBool(90)
+	if admit:
+		admit = 1
+	else:
+		admit = 0
+	student.append({
+		"studentID" : i - teacher_amount,
+		"personID" : i,
+		"admitted" : admit
+	})
 	siblings.append({
-		"studentID" : i,
-		"siblingID" : i - person_amount + siblings_amount
+		"studentID" : i - teacher_amount,
+		"siblingID" : (i - person_amount + siblings_amount) % (siblings_amount - double_sibling_amount)
+	})
+	siblings.append({
+		"studentID" : (i - person_amount + siblings_amount) % (siblings_amount - double_sibling_amount),
+		"siblingID" : i - teacher_amount
 	})
 	knownInstruments.append({
 		"personID" : i,

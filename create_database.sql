@@ -76,8 +76,10 @@ CREATE TABLE IF NOT EXISTS soundgood.StudentLesson (
 CREATE TABLE IF NOT EXISTS soundgood.TimeSlot (
   timeSlotID INT NOT NULL,
   teacherID INT NOT NULL,
-  date DATE NOT NULL,
   time TIME NOT NULL,
+  day INT NOT NULL,
+  month INT NOT NULL,
+  year INT NOT NULL,
   PRIMARY KEY (timeSlotID)
 );
 
