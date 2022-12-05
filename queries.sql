@@ -1,6 +1,6 @@
 
 ### Students without siblings
-SELECT COUNT(studentid)
+SELECT COUNT(studentid) as "Students"
 FROM student
 WHERE studentid not in (SELECT studentid FROM siblings);
 
