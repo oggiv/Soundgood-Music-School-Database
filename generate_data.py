@@ -48,9 +48,25 @@ def randomFromList(entries):
 # Pre-defined tuples
 print("Price...", end = " ")
 price = [
-	{"lessonType" : "individual", "cost" : 49},
-	{"lessonType" : "group", "cost" : 39},
-	{"lessonType" : "ensamble", "cost" : 29}
+	{"lessonType" : 0, "cost" : 49},
+	{"lessonType" : 1, "cost" : 39},
+	{"lessonType" : 2, "cost" : 29}
+]
+print("Done.")
+
+print("Skill...", end = " ")
+skill = [
+	{"skill" : 0, "title" : "beginner"},
+	{"skill" : 1, "title" : "intermediate"},
+	{"skill" : 2, "title" : "advanced"}
+]
+print("Done.")
+
+print("LessonType...", end = " ")
+lessonType = [
+	{"type" : 0, "title" : "individual"},
+	{"type" : 1, "title" : "group"},
+	{"type" : 2, "title" : "ensamble"}
 ]
 print("Done.")
 
@@ -84,7 +100,9 @@ for i in range(0, instrument_amount):
 		"instrumentID" : i,
 		"type" : randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "spoon", "flute", "bass", "drums"]),
 		"brand" : randomFromList(["home made", "IKEA", "Flying Tiger", "Stradivarius"]),
-		"price" : randint(5, 500)
+		"price" : randint(5, 500),
+		"monthRented" : "NULL",
+		"yearRented" : "NULL"
 	})
 print("Done.")
 
@@ -93,7 +111,7 @@ person = []
 teacher = []
 student = []
 siblings = []
-knownInstrument = []
+knownInstruments = []
 personContact = []
 timeSlot = []
 for i in range(0, teacher_amount):
@@ -104,12 +122,17 @@ for i in range(0, teacher_amount):
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
 	})
+	tEnsamble = randomBool(90);
+	if tEnsamble:
+		tEnsamble = 1
+	else:
+		tEnsamble = 0
 	teacher.append({
 		"teacherID" : i,
 		"personID" : i,
-		"teachesEnsambles" : randomBool(90)
+		"teachesEnsambles" : tEnsamble
 	})
-	knownInstrument.append({
+	knownInstruments.append({
 		"personID" : i,
 		"instrument" : randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 	})
@@ -131,12 +154,17 @@ for i in range(teacher_amount, person_amount - siblings_amount):
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
 	})
+	admit = randomBool(90)
+	if admit:
+		admit = 1
+	else:
+		admit = 0
 	student.append({
 		"studentID" : i - teacher_amount,
 		"personID" : i,
-		"admitted" : randomBool(90)
+		"admitted" : admit
 	})
-	knownInstrument.append({
+	knownInstruments.append({
 		"personID" : i,
 		"instrument" : randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 	})
@@ -157,7 +185,7 @@ for i in range(person_amount - siblings_amount, person_amount):
 		"studentID" : i,
 		"siblingID" : i - person_amount + siblings_amount
 	})
-	knownInstrument.append({
+	knownInstruments.append({
 		"personID" : i,
 		"instrument" : randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 	})
@@ -173,8 +201,8 @@ print("PersonContact... Done.")
 print("KnownInstrument...", end = " ")
 for i in range(0, knownInstruments_amount - person_amount):
 	insts = ["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"]
-	insts.remove(knownInstrument[i]["instrument"])
-	knownInstrument.append({
+	insts.remove(knownInstruments[i]["instrument"])
+	knownInstruments.append({
 		"personID" : i,
 		"instrument" : randomFromList(insts)
 	})
@@ -184,7 +212,7 @@ print("StudentInstrument...", end = " ")
 studentInstrument = []
 rentedInstruments = []
 for i in range(0, studentInstrument_amount):
-	inst = knownInstrument[i + teacher_amount]["instrument"]
+	inst = knownInstruments[i + teacher_amount]["instrument"]
 	instID = 0
 	found = False
 	for s in range(0, len(instrument) - 1):
@@ -213,10 +241,10 @@ studentLesson = []
 for i in range(0, lesson_amount):
 	lesson_tuple = {
 		"lessonID" : i,
-		"skill" : randomFromList(["beginner", "intermediate", "advanced"]),
-		"lessonType" : randomFromList(["individual", "group", "ensamble"])
+		"skill" : randint(0, 2),
+		"lessonType" : randint(0, 2)
 	}
-	if lesson_tuple["lessonType"] == "individual":
+	if lesson_tuple["lessonType"] == 0:
 		lesson_tuple["teacherID"] = randint(0, teacher_amount - 1)
 		inst = randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 		individualLesson.append({
@@ -227,7 +255,7 @@ for i in range(0, lesson_amount):
 			"studentID" : randint(0, student_amount - 1),
 			"lessonID" : i
 		})
-	elif lesson_tuple["lessonType"] == "group":
+	elif lesson_tuple["lessonType"] == 1:
 		lesson_tuple["teacherID"] = randint(0, teacher_amount - 1)
 		minStudents = randint(2, 4)
 		maxStudents = randint(minStudents, 10)
@@ -247,7 +275,7 @@ for i in range(0, lesson_amount):
 				"studentID" : studentID,
 				"lessonID" : i
 			})
-	elif lesson_tuple["lessonType"] == "ensamble":
+	elif lesson_tuple["lessonType"] == 2:
 		teacherID = randint(0, teacher_amount - 1)
 		while not teacher[teacherID]["teachesEnsambles"]:
 			teacherID = randint(0, teacher_amount - 1)
@@ -308,7 +336,7 @@ if ans.lower() != "n":
 		elif inp == "instrument":
 			data = instrument
 		elif inp == "known":
-			data = knownInstrument
+			data = knownInstruments
 		elif inp == "lesson":
 			data = lesson
 		elif inp == "lessontime":
@@ -331,9 +359,13 @@ if ans.lower() != "n":
 			data = teacher
 		elif inp == "timeslot":
 			data = timeSlot
+		elif inp == "skill":
+			data = skill
+		elif inp == "lessontype":
+			data = lessonType
 		else:
 			print("Invalid command.")
-			print("Valid commands are: exit, address, contact, ensamble, group, individual, individualLesson, instrument, known, lessontime, person, personcontact, price, siblings, student, studentinstrument, studentlesson, teacher, timeslot")
+			print("Valid commands are: exit, address, contact, ensamble, group, individual, individualLesson, instrument, known, lessontime, person, personcontact, price, siblings, student, studentinstrument, studentlesson, teacher, timeslot, skill, lessontype")
 
 		for i in data:
 			print(i)
@@ -348,8 +380,10 @@ if ans.lower() != "n":
 		"Contact" : contact,
 		"Instrument" : instrument,
 		"Price" : price,
+		"Skill" : skill,
+		"LessonType" : lessonType,
 		"Person" : person,
-		"KnownInstrument" : knownInstrument,
+		"KnownInstruments" : knownInstruments,
 		"PersonContact" : personContact,
 		"Teacher" : teacher,
 		"Student" : student,
@@ -360,7 +394,8 @@ if ans.lower() != "n":
 		"Ensamble" : ensamble,
 		"IndividualLesson" : individualLesson,
 		"StudentLesson" : studentLesson,
-		"TimeSlot" : timeSlot
+		"TimeSlot" : timeSlot,
+		"LessonTimeSlot" : lessonTimeSlot
 	}
 
 	for b in relations:
@@ -375,7 +410,7 @@ if ans.lower() != "n":
 			line = "	("
 			for a in t:
 				formatting = ""
-				if type(t[a] is str):
+				if type(t[a]) is str and t[a] != "NULL":
 					formatting = "'"
 				line = line + formatting + str(t[a]) + formatting + ", "
 			line = line[:-2] + "),"
