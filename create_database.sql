@@ -14,9 +14,9 @@
 CREATE SCHEMA IF NOT EXISTS soundgood ;
 
 -- -----------------------------------------------------
--- Table soundgood.Instrument
+-- Table Instrument
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Instrument (
+CREATE TABLE IF NOT EXISTS Instrument (
   instrumentID INT NOT NULL,
   type VARCHAR(500) NOT NULL,
   brand VARCHAR(500) NOT NULL,
@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Instrument (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Student
+-- Table Student
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Student (
+CREATE TABLE IF NOT EXISTS Student (
   studentID INT NOT NULL,
   personID INT NOT NULL,
   admitted INT NOT NULL,
@@ -39,9 +39,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Student (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Siblings
+-- Table Siblings
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Siblings (
+CREATE TABLE IF NOT EXISTS Siblings (
   studentID INT NOT NULL,
   siblingID INT NOT NULL,
   PRIMARY KEY (studentID, siblingID)
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Siblings (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Address
+-- Table Address
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Address (
+CREATE TABLE IF NOT EXISTS Address (
   addressID INT NOT NULL,
   street VARCHAR(500) NOT NULL,
   zipCode VARCHAR(500) NOT NULL,
@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Address (
 
 
 -- -----------------------------------------------------
--- Table soundgood.StudentLesson
+-- Table StudentLesson
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.StudentLesson (
+CREATE TABLE IF NOT EXISTS StudentLesson (
   studentID INT NOT NULL,
   lessonID INT NOT NULL,
   PRIMARY KEY (studentID, lessonID)
@@ -71,9 +71,9 @@ CREATE TABLE IF NOT EXISTS soundgood.StudentLesson (
 
 
 -- -----------------------------------------------------
--- Table soundgood.TimeSlot
+-- Table TimeSlot
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.TimeSlot (
+CREATE TABLE IF NOT EXISTS TimeSlot (
   timeSlotID INT NOT NULL,
   teacherID INT NOT NULL,
   time TIME NOT NULL,
@@ -85,21 +85,20 @@ CREATE TABLE IF NOT EXISTS soundgood.TimeSlot (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Lesson
+-- Table Lesson
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Lesson (
+CREATE TABLE IF NOT EXISTS Lesson (
   lessonID INT NOT NULL,
   skill INT NOT NULL,
-  teacherID INT NOT NULL,
   lessonType INT NOT NULL,
   PRIMARY KEY (lessonID)
 );
 
 
 -- -----------------------------------------------------
--- Table soundgood.GroupLesson
+-- Table GroupLesson
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.GroupLesson (
+CREATE TABLE IF NOT EXISTS GroupLesson (
   lessonID INT NOT NULL,
   maxStudents INT NOT NULL,
   minStudents INT NOT NULL,
@@ -109,9 +108,9 @@ CREATE TABLE IF NOT EXISTS soundgood.GroupLesson (
 
 
 -- -----------------------------------------------------
--- Table soundgood.IndividualLesson
+-- Table IndividualLesson
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.IndividualLesson (
+CREATE TABLE IF NOT EXISTS IndividualLesson (
   lessonID INT NOT NULL,
   instrument VARCHAR(500) NULL,
   PRIMARY KEY (lessonID)
@@ -119,9 +118,9 @@ CREATE TABLE IF NOT EXISTS soundgood.IndividualLesson (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Ensamble
+-- Table Ensamble
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Ensamble (
+CREATE TABLE IF NOT EXISTS Ensamble (
   lessonID INT NOT NULL,
   maxStudents INT NOT NULL,
   minStudents INT NOT NULL,
@@ -131,9 +130,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Ensamble (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Contact
+-- Table Contact
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Contact (
+CREATE TABLE IF NOT EXISTS Contact (
   contactID INT NOT NULL,
   contactTitle VARCHAR(500) NOT NULL,
   phoneNumber VARCHAR(12) NOT NULL,
@@ -143,9 +142,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Contact (
 
 
 -- -----------------------------------------------------
--- Table soundgood.KnownInstruments
+-- Table KnownInstruments
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.KnownInstruments (
+CREATE TABLE IF NOT EXISTS KnownInstruments (
   personID INT NOT NULL,
   instrument VARCHAR(500) NULL,
   PRIMARY KEY (personID, instrument)
@@ -153,12 +152,10 @@ CREATE TABLE IF NOT EXISTS soundgood.KnownInstruments (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Person
+-- Table Person
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Person (
+CREATE TABLE IF NOT EXISTS Person (
   personID INT NOT NULL,
-  teacherID INT NULL,
-  studentID INT NULL,
   addressID INT NOT NULL,
   fullName VARCHAR(500) NOT NULL,
   personNumber VARCHAR(12) NOT NULL,
@@ -167,9 +164,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Person (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Teacher
+-- Table Teacher
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Teacher (
+CREATE TABLE IF NOT EXISTS Teacher (
   teacherID INT NOT NULL,
   personID INT NOT NULL,
   teachesEnsambles INT NOT NULL,
@@ -178,9 +175,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Teacher (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Price
+-- Table Price
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Price (
+CREATE TABLE IF NOT EXISTS Price (
   lessonType INT NOT NULL,
   cost INT NOT NULL,
   PRIMARY KEY (lessonType)
@@ -188,9 +185,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Price (
 
 
 -- -----------------------------------------------------
--- Table soundgood.PersonContact
+-- Table PersonContact
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.PersonContact (
+CREATE TABLE IF NOT EXISTS PersonContact (
   personID INT NOT NULL,
   contactID INT NOT NULL,
   PRIMARY KEY (personID, contactID)
@@ -198,9 +195,9 @@ CREATE TABLE IF NOT EXISTS soundgood.PersonContact (
 
 
 -- -----------------------------------------------------
--- Table soundgood.StudentInstrument
+-- Table StudentInstrument
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.StudentInstrument (
+CREATE TABLE IF NOT EXISTS StudentInstrument (
   studentID INT NOT NULL,
   instrumentID INT NOT NULL,
   PRIMARY KEY (studentID, instrumentID)
@@ -208,9 +205,9 @@ CREATE TABLE IF NOT EXISTS soundgood.StudentInstrument (
 
 
 -- -----------------------------------------------------
--- Table soundgood.LessonTimeSlot
+-- Table LessonTimeSlot
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.LessonTimeSlot (
+CREATE TABLE IF NOT EXISTS LessonTimeSlot (
   lessonID INT NOT NULL,
   timeSlotID INT NOT NULL,
   PRIMARY KEY (timeSlotID, lessonID)
@@ -218,9 +215,9 @@ CREATE TABLE IF NOT EXISTS soundgood.LessonTimeSlot (
 
 
 -- -----------------------------------------------------
--- Table soundgood.Skill
+-- Table Skill
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.Skill (
+CREATE TABLE IF NOT EXISTS Skill (
   skill INT NOT NULL,
   title VARCHAR(500) NOT NULL,
   PRIMARY KEY (skill)
@@ -228,9 +225,9 @@ CREATE TABLE IF NOT EXISTS soundgood.Skill (
 
 
 -- -----------------------------------------------------
--- Table soundgood.LessonType
+-- Table LessonType
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS soundgood.LessonType (
+CREATE TABLE IF NOT EXISTS LessonType (
   type INT NOT NULL,
   title VARCHAR(500) NOT NULL,
   PRIMARY KEY (type)

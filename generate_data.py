@@ -116,7 +116,6 @@ personContact = []
 for i in range(0, teacher_amount):
 	person.append({
 		"personID" : i,
-		"teacherID" : i,
 		"addressID" : i,
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
@@ -145,7 +144,7 @@ for i in range(0, timeSlot_amount):
 		"teacherID" : randint(0, teacher_amount - 1),
 		"day" : datee[2],
 		"month" : datee[1],
-		"year" : randint(2018, 2022),
+		"year" : randint(2018, 2023),
 		"time" : fake.time()
 	})
 print("Done.")
@@ -154,7 +153,6 @@ print("Student...", end = " ")
 for i in range(teacher_amount, person_amount - siblings_amount):
 	person.append({
 		"personID" : i,
-		"studentID" : i - teacher_amount,
 		"addressID" : i,
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
@@ -181,7 +179,6 @@ for i in range(teacher_amount, person_amount - siblings_amount):
 for i in range(person_amount - siblings_amount, person_amount):
 	person.append({
 		"personID" : i,
-		"studentID" : i - teacher_amount,
 		"addressID" : i - person_amount + siblings_amount,
 		"personNumber" : randomPersonalNumber(),
 		"fullName" : fake.name()
@@ -199,10 +196,6 @@ for i in range(person_amount - siblings_amount, person_amount):
 	siblings.append({
 		"studentID" : i - teacher_amount,
 		"siblingID" : (i - person_amount + siblings_amount) % (siblings_amount - double_sibling_amount)
-	})
-	siblings.append({
-		"studentID" : (i - person_amount + siblings_amount) % (siblings_amount - double_sibling_amount),
-		"siblingID" : i - teacher_amount
 	})
 	knownInstruments.append({
 		"personID" : i,
@@ -243,7 +236,7 @@ for i in range(0, studentInstrument_amount):
 
 	if found:
 		instrument[instID]["monthRented"] = randint(1, 12)
-		instrument[instID]["yearRented"] = randint(2019, 2022)
+		instrument[instID]["yearRented"] = randint(2019, 2023)
 		studentInstrument.append({
 			"studentID" : i,
 			"instrumentID" : instID
@@ -264,7 +257,7 @@ for i in range(0, lesson_amount):
 		"lessonType" : randint(0, 2)
 	}
 	if lesson_tuple["lessonType"] == 0:
-		lesson_tuple["teacherID"] = randint(0, teacher_amount - 1)
+		#lesson_tuple["teacherID"] = randint(0, teacher_amount - 1)
 		inst = randomFromList(["guitar", "piano", "saw", "harmonica", "theremin", "singing", "spoon", "flute", "bass", "drums"])
 		individualLesson.append({
 			"lessonID" : i,
@@ -275,7 +268,7 @@ for i in range(0, lesson_amount):
 			"lessonID" : i
 		})
 	elif lesson_tuple["lessonType"] == 1:
-		lesson_tuple["teacherID"] = randint(0, teacher_amount - 1)
+		#lesson_tuple["teacherID"] = 0
 		minStudents = randint(2, 4)
 		maxStudents = randint(minStudents, 10)
 		groupLesson.append({
@@ -295,10 +288,10 @@ for i in range(0, lesson_amount):
 				"lessonID" : i
 			})
 	elif lesson_tuple["lessonType"] == 2:
-		teacherID = randint(0, teacher_amount - 1)
+		'''teacherID = randint(0, teacher_amount - 1)
 		while not teacher[teacherID]["teachesEnsambles"]:
 			teacherID = randint(0, teacher_amount - 1)
-		lesson_tuple["teacherID"] = teacherID
+		lesson_tuple["teacherID"] = teacherID'''
 		minStudents = randint(2, 4)
 		maxStudents = randint(minStudents, 10)
 		ensamble.append({
