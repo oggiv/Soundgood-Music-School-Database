@@ -7,7 +7,8 @@ INNER JOIN (
 	FROM TimeSlot
 	WHERE
 		TimeSlot.month = (SELECT EXTRACT(MONTH FROM (SELECT CURRENT_DATE))) AND
-		TimeSlot.year = (SELECT EXTRACT(YEAR FROM (SELECT CURRENT_DATE)))
+		TimeSlot.year = (SELECT EXTRACT(YEAR FROM (SELECT CURRENT_DATE))) AND
+		timeSlotID IN (SELECT timeSlotID FROM LessonTimeSlot)
 	GROUP BY teacherID
 ) AS teachersInMonth
 ON Teacher.teacherID = teachersInMonth.teacherID
@@ -20,7 +21,7 @@ ORDER BY lessonsInMonth
 
 /* Show how many students there are with no sibling, with one sibling, with two siblings, etc. This query is expected to be performed a few times per week. */
 
-WITH a AS (
+WITH siblingInfo AS (
 SELECT siblingCount, COUNT(siblingCount) AS studentAmount
 	FROM
 	(
@@ -28,13 +29,13 @@ SELECT siblingCount, COUNT(siblingCount) AS studentAmount
 		FROM student, siblings
 		WHERE student.studentID = siblings.studentID OR student.studentID = siblings.siblingID
 		GROUP BY student.studentID
-	) AS xyz
+	) AS subQuery
 	GROUP BY siblingCount
 ),
-b AS (SELECT COUNT(studentID) AS studentAmount FROM Student)
-SELECT * FROM a
+studentInfo AS (SELECT COUNT(studentID) AS studentAmount FROM Student)
+SELECT * FROM siblingInfo
 UNION ALL
-SELECT 0 AS siblingCount, studentAmount - (SELECT SUM(studentAmount) FROM a) AS studentAmount FROM b
+SELECT 0 AS siblingCount, studentAmount - (SELECT SUM(studentAmount) FROM siblingInfo) AS studentAmount FROM studentInfo
 ORDER BY siblingCount
 ;
 
